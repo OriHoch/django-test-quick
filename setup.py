@@ -6,8 +6,9 @@ except ImportError:
 
 setup(
     name='django-test-quick',
-    version='1.1.0',
+    version='1.2.0',
     author='Ori Hoch',
     author_email='ori@uumpa.com',
     description='django management command to allow quicker running of tests',
+    packages=('django_test_quick','django_test_quick.management.commands',)
 )
