@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand
 from django.test.utils import get_runner as django_get_runner
 from django.core.management import call_command
 from django.test.runner import DiscoverRunner
+from django.core.management import CommandError
 
 
 TESTQUICK_INSTALL = """
@@ -117,8 +118,18 @@ class Command(BaseCommand):
             return
 
         if options.get('init'):
-            call_command('syncdb', interactive=False)
-            call_command('migrate', fake=True, interactive=False)
+            init_commands = getattr(settings, 'TESTQUICK_INIT_COMMANDS', None)
+            if init_commands is None:
+                init_commands = (
+                    ('syncdb', [], {'interactive': False}),
+                    ('migrate', [], {'fake': True, 'interactive': False}),
+                )
+            for init_command, init_command_args, init_command_kwargs in init_commands:
+                try:
+                    call_command(init_command, *init_command_args, **init_command_kwargs)
+                except CommandError as e:
+                    print 'Error runnning initialization management command'
+                    print e.message
             call_command('testquick')
         else:
             TestRunner = self.get_runner(settings, options.get('testrunner'))
