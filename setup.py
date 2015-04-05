@@ -10,5 +10,5 @@ setup(
     author='Ori Hoch',
     author_email='ori@uumpa.com',
     description='django management command to allow quicker running of tests',
-    packages=('django_test_quick','django_test_quick.management.commands',)
+    packages=('django_test_quick', 'django_test_quick.management', 'django_test_quick.management.commands',)
 )
