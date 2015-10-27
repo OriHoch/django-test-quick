@@ -1,3 +1,16 @@
+from django.test import TestCase as DjangoTestCase
+import django_test_quick
+
+
+class TestCase(DjangoTestCase):
+
+    def _pre_setup(self):
+        if not django_test_quick.TESTQUICK_RUNNING:
+            super(TestCase, self)._pre_setup()
+
+    def _post_teardown(self):
+        if not django_test_quick.TESTQUICK_RUNNING:
+            super(TestCase, self)._post_teardown()
 
 
 def get_or_create_or_update(Model, **kwargs):

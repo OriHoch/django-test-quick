@@ -10,6 +10,8 @@ from django.core.management import call_command
 from django.test.runner import DiscoverRunner
 from django.core.management import CommandError
 
+import django_test_quick
+
 
 TESTQUICK_INSTALL = """
 ######################################################
@@ -116,6 +118,8 @@ class Command(BaseCommand):
         if getattr(settings, 'ENABLE_TESTQUICK', None) != True:
             print '\n\nERROR\n\n%s\n\n'%TESTQUICK_INSTALL
             return
+
+        django_test_quick.TESTQUICK_RUNNING = True
 
         if options.get('init'):
             init_commands = getattr(settings, 'TESTQUICK_INIT_COMMANDS', None)
